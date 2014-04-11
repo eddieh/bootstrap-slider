@@ -1,0 +1,22 @@
+.slider {
+}
+
+.slider [class*=col] {
+    padding: 0;
+}
+
+.progress {
+}
+
+.progress-labels {
+    font-size: 10px;
+    margin-bottom: 2px;
+}
+
+.progress-labels .tick {
+    border-left: 1px solid #ddd;
+}
+
+.progress-labels .tick:first-child {
+    border-left: none;
+}
