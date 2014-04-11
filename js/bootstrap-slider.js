@@ -12,10 +12,15 @@
   // SLIDER CLASS DEFINITION
   // =========================
 
-  var toggle   = '[data-toggle="slider"]'
+  var toggle = '[data-toggle="slider"]'
 
-  var Slider = function (element) {
+  var Slider = function (element, options) {
     var $el = $(element)
+
+    this.options = $.extend({}, Slider.DEFAULTS, options)
+
+    if (typeof this.options.step == 'string')
+      this.options.step = parseInt(this.options.step)
 
     this.$progress = $el.find('.progress')
     this.$progressBar = $el.find('.progress-bar')
@@ -23,6 +28,9 @@
 
     this.$handle.on('mousedown', $.proxy(this.mouseDown, this))
   }
+
+  Slider.DEFAULTS = {
+  };
 
   Slider.prototype.mouseDown = function (e) {
     $(document)
@@ -40,9 +48,16 @@
     var mouseX = e.clientX,
         progressLeft = this.$progress.offset().left,
         progressWidth = this.$progress.width(),
-        newLeft = ((mouseX - progressLeft) / progressWidth) * 100
+        handleMargin = parseInt(this.$handle.css('margin-left')),
+        handleLeft = this.$handle.offset().left - handleMargin,
+        originalLeft = Math.round(((handleLeft - progressLeft) / progressWidth) * 100),
+        newLeft = Math.round(((mouseX - progressLeft) / progressWidth) * 100)
 
     e.preventDefault()
+
+    if (typeof this.options.step == 'number')
+      if (Math.abs(originalLeft - newLeft) != this.options.step)
+        return
 
     if (newLeft < 0) newLeft = 0
     if (newLeft > 100) newLeft = 100
@@ -59,9 +74,10 @@
   $.fn.slider = function (option) {
     return this.each(function () {
       var $this = $(this)
-      var data  = $this.data('bs.slider')
+      var data = $this.data('bs.slider')
+      var options = typeof option == 'object' && option
 
-      if (!data) $this.data('bs.slider', (data = new Slider(this)))
+      if (!data) $this.data('bs.slider', (data = new Slider(this, options)))
       if (typeof option == 'string') data[option].call($this)
     })
   }
