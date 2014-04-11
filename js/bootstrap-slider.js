@@ -13,12 +13,43 @@
   // =========================
 
   var toggle   = '[data-toggle="slider"]'
+
   var Slider = function (element) {
+    var $el = $(element)
+
+    this.$progress = $el.find('.progress')
+    this.$progressBar = $el.find('.progress-bar')
+    this.$handle = $el.find('.slider-handle')
+
+    this.$handle.on('mousedown', $.proxy(this.mouseDown, this))
   }
 
-  Slider.prototype.noop = function (e) {
+  Slider.prototype.mouseDown = function (e) {
+    $(document)
+      .on('mousemove', $.proxy(this.mouseMove, this))
+      .on('mouseup', $.proxy(this.mouseUp, this))
   }
 
+  Slider.prototype.mouseUp = function (e) {
+    $(document)
+      .off('mousemove', this.mouseMove)
+      .off('mouseup', this.mouseUp)
+  }
+
+  Slider.prototype.mouseMove = function (e) {
+    var mouseX = e.clientX,
+        progressLeft = this.$progress.offset().left,
+        progressWidth = this.$progress.width(),
+        newLeft = ((mouseX - progressLeft) / progressWidth) * 100
+
+    e.preventDefault()
+
+    if (newLeft < 0) newLeft = 0
+    if (newLeft > 100) newLeft = 100
+
+    this.$handle.css('left', newLeft + '%')
+    this.$progressBar.css('width', newLeft + '%')
+  }
 
   // SLIDER PLUGIN DEFINITION
   // ==========================

@@ -22,7 +22,8 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-offset-4 col-xs-4">
-          <div class="slider">
+
+          <div id="sliderOne" class="slider">
             <div class="progress-labels clearfix">
               <div class="col-xs-3 tick text-left">0%</div>
               <div class="col-xs-6 tick text-center">50%</div>
@@ -36,6 +37,7 @@
             <div class="slider-handle" style="left: 50%">
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -44,6 +46,7 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="js/bootstrap-slider.js"></script>
     <script>
+      $('#sliderOne').slider();
     </script>
   </body>
 </html>

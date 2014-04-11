@@ -22,6 +22,11 @@
     border-left: none;
 }
 
+.slider .progress-bar {
+    -webkit-transition: none;
+            transition: none;
+}
+
 .slider-handle {
     position: absolute;
     width: 28px;
