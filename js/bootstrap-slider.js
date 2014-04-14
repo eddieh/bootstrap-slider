@@ -24,6 +24,9 @@
       this.options.tolerance = this.options.tolerance || this.options.step * .2
     }
 
+    if (this.options.showChange)
+      this.$progressBarChange = $el.find('.progress-bar-change')
+
     this.$progress = $el.find('.progress')
     this.$progressBar = $el.find('.progress-bar')
     this.$handle = $el.find('.slider-handle')
@@ -67,6 +70,9 @@
 
     this.$handle.css('left', newLeft + '%')
     this.$progressBar.css('width', newLeft + '%')
+
+    if (this.options.showChange)
+      this.showChange(progressLeft, progressWidth, newLeft)
   }
 
   Slider.prototype.stepBehavior = function (progressLeft, progressWidth, newLeft) {
@@ -97,6 +103,27 @@
         newLeft + '%' : this.options.valueTooltip(newLeft),
       trigger: 'manual'
     }).tooltip('show')
+  }
+
+  Slider.prototype.showChange = function (progressLeft, progressWidth, newLeft) {
+    var handleMargin = 0,
+        handleLeft = 0
+
+    if (!this.originalLeft) {
+      handleMargin = parseInt(this.$handle.css('margin-left'))
+      handleLeft = this.$handle.offset().left - handleMargin
+      this.originalLeft = Math.round(((handleLeft - progressLeft) / progressWidth) * 100)
+    }
+
+    if (newLeft <= this.originalLeft) {
+      this.$progressBar.css('width', newLeft + '%')
+      this.$progressBarChange.css('width', this.originalLeft - newLeft + '%')
+    }
+
+    if (newLeft > this.originalLeft) {
+      this.$progressBar.css('width', this.originalLeft + '%')
+      this.$progressBarChange.css('width', newLeft - this.originalLeft + '%')
+    }
   }
 
   // SLIDER PLUGIN DEFINITION
