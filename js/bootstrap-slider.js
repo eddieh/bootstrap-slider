@@ -44,6 +44,7 @@
     $(document)
       .off('mousemove', this.mouseMove)
       .off('mouseup', this.mouseUp)
+    this.$handle.tooltip('destroy')
   }
 
   Slider.prototype.mouseMove = function (e) {
@@ -61,6 +62,8 @@
 
     if (newLeft < 0) newLeft = 0
     if (newLeft > 100) newLeft = 100
+
+    if (this.options.valueTooltip) this.showTooltip(newLeft)
 
     this.$handle.css('left', newLeft + '%')
     this.$progressBar.css('width', newLeft + '%')
@@ -83,6 +86,17 @@
     if (Math.abs(originalLeft - newLeft) != step) return -1
 
     return newLeft
+  }
+
+  Slider.prototype.showTooltip = function (newLeft) {
+    this.$handle.tooltip('destroy')
+    this.$handle.tooltip({
+      animation: false,
+      placement: 'bottom',
+      title: typeof this.options.valueTooltip == 'boolean' ?
+        newLeft + '%' : this.options.valueTooltip(newLeft),
+      trigger: 'manual'
+    }).tooltip('show')
   }
 
   // SLIDER PLUGIN DEFINITION
