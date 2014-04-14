@@ -19,8 +19,10 @@
 
     this.options = $.extend({}, Slider.DEFAULTS, options)
 
-    if (typeof this.options.step == 'string')
+    if (typeof this.options.step == 'string') {
       this.options.step = parseInt(this.options.step)
+      this.options.tolerance = this.options.tolerance || this.options.step * .2
+    }
 
     this.$progress = $el.find('.progress')
     this.$progressBar = $el.find('.progress-bar')
@@ -48,22 +50,39 @@
     var mouseX = e.clientX,
         progressLeft = this.$progress.offset().left,
         progressWidth = this.$progress.width(),
-        handleMargin = parseInt(this.$handle.css('margin-left')),
-        handleLeft = this.$handle.offset().left - handleMargin,
-        originalLeft = Math.round(((handleLeft - progressLeft) / progressWidth) * 100),
         newLeft = Math.round(((mouseX - progressLeft) / progressWidth) * 100)
 
     e.preventDefault()
 
-    if (typeof this.options.step == 'number')
-      if (Math.abs(originalLeft - newLeft) != this.options.step)
-        return
+    if (typeof this.options.step == 'number') {
+      newLeft = this.stepBehavior(progressLeft, progressWidth, newLeft)
+      if (newLeft == -1) return
+    }
 
     if (newLeft < 0) newLeft = 0
     if (newLeft > 100) newLeft = 100
 
     this.$handle.css('left', newLeft + '%')
     this.$progressBar.css('width', newLeft + '%')
+  }
+
+  Slider.prototype.stepBehavior = function (progressLeft, progressWidth, newLeft) {
+    var handleMargin = parseInt(this.$handle.css('margin-left')),
+        handleLeft = this.$handle.offset().left - handleMargin,
+        originalLeft = Math.round(((handleLeft - progressLeft) / progressWidth) * 100),
+        step = this.options.step,
+        tolerance = this.options.tolerance,
+        left = originalLeft - step,
+        right = originalLeft + step
+
+    if (newLeft >= left - tolerance && newLeft <= left + tolerance)
+      newLeft = originalLeft - step
+    if (newLeft >= right - tolerance && newLeft <= right + tolerance)
+      newLeft = originalLeft + step
+
+    if (Math.abs(originalLeft - newLeft) != step) return -1
+
+    return newLeft
   }
 
   // SLIDER PLUGIN DEFINITION
