@@ -76,6 +76,22 @@
             </div>
           </div>
         </div>
+        <div class="col-xs-4">
+          <div id="sliderThreeA" class="slider">
+            <div class="progress-labels clearfix">
+              <div class="col-xs-3 tick text-left">0%</div>
+              <div class="col-xs-6 tick text-center">50%</div>
+              <div class="col-xs-3 tick text-right">100%</div>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+                <span class="sr-only">50% Complete</span>
+              </div>
+            </div>
+            <div class="slider-handle" style="left: 50%">
+            </div>
+          </div>
+        </div>
       </div>
 
        <div class="row">
@@ -98,6 +114,9 @@
             </div>
           </div>
         </div>
+        <div class="col-xs-4">
+          <button id="acceptChange" type="button" class="btn btn-default">Accept Change</button>
+        </div>
       </div>
 
     </div>
@@ -113,8 +132,16 @@
      $('#sliderThree').slider({
        valueTooltip: true
      })
-     $('#sliderFour').slider({
+     $('#sliderThreeA').slider({
+       valueTooltip: function (val) {
+         return val + '% of 64 is ' + Math.round(64 * (val * .01))
+       }
+     })
+     var $sliderFour = $('#sliderFour').slider({
        showChange: true
+     })
+     $('#acceptChange').on('click', function (e) {
+       $sliderFour.slider('accept')
      })
     </script>
     </script>

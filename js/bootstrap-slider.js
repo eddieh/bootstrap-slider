@@ -126,6 +126,22 @@
     }
   }
 
+  Slider.prototype.accept = function () {
+    var handleMargin = parseInt(this.$handle.css('margin-left')),
+        handleLeft = this.$handle.offset().left - handleMargin,
+        progressLeft = this.$progress.offset().left,
+        progressWidth = this.$progress.width(),
+        newLeft = Math.round(((handleLeft - progressLeft) / progressWidth) * 100)
+
+    if (!this.options.showChange) return
+
+    this.$handle.css('left', newLeft + '%')
+    this.$progressBar.css('width', newLeft + '%')
+    this.$progressBarChange.css('width', '0%')
+
+    delete this.originalLeft
+  }
+
   // SLIDER PLUGIN DEFINITION
   // ==========================
 
@@ -138,7 +154,7 @@
       var options = typeof option == 'object' && option
 
       if (!data) $this.data('bs.slider', (data = new Slider(this, options)))
-      if (typeof option == 'string') data[option].call($this)
+      if (typeof option == 'string') data[option]()
     })
   }
 
