@@ -115,7 +115,9 @@
           </div>
         </div>
         <div class="col-xs-4">
-          <button id="acceptChange" type="button" class="btn btn-default">Accept Change</button>
+          Accept or reject change:<br>
+          <button id="acceptChange" type="button" class="btn btn-sm btn-default">Accept Change</button>
+          <button id="rejectChange" type="button" class="btn btn-sm btn-default">Reject Change</button>
         </div>
       </div>
 
@@ -142,6 +144,9 @@
      })
      $('#acceptChange').on('click', function (e) {
        $sliderFour.slider('accept')
+     })
+     $('#rejectChange').on('click', function (e) {
+       $sliderFour.slider('reject')
      })
     </script>
     </script>

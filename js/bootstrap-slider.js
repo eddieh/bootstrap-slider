@@ -142,6 +142,16 @@
     delete this.originalLeft
   }
 
+  Slider.prototype.reject = function () {
+    if (!this.options.showChange) return
+
+    this.$handle.css('left', this.originalLeft + '%')
+    this.$progressBar.css('width', this.originalLeft + '%')
+    this.$progressBarChange.css('width', '0%')
+
+    delete this.originalLeft
+  }
+
   // SLIDER PLUGIN DEFINITION
   // ==========================
 
