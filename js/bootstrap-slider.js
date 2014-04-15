@@ -15,7 +15,7 @@
   var toggle = '[data-toggle="slider"]'
 
   var Slider = function (element, options) {
-    var $el = $(element)
+    this.$element = $(element)
 
     this.options = $.extend({}, Slider.DEFAULTS, options)
 
@@ -25,11 +25,11 @@
     }
 
     if (this.options.showChange)
-      this.$progressBarChange = $el.find('.progress-bar-change')
+      this.$progressBarChange = this.$element.find('.progress-bar-change')
 
-    this.$progress = $el.find('.progress')
-    this.$progressBar = $el.find('.progress-bar')
-    this.$handle = $el.find('.slider-handle')
+    this.$progress = this.$element.find('.progress')
+    this.$progressBar = this.$element.find('.progress-bar')
+    this.$handle = this.$element.find('.slider-handle')
 
     this.$handle.on('mousedown', $.proxy(this.mouseDown, this))
   }
@@ -73,6 +73,8 @@
 
     if (this.options.showChange)
       this.showChange(progressLeft, progressWidth, newLeft)
+
+    this.$element.trigger('change.bs.slider')
   }
 
   Slider.prototype.stepBehavior = function (progressLeft, progressWidth, newLeft) {
@@ -152,12 +154,30 @@
     delete this.originalLeft
   }
 
+  Slider.prototype.value = function () {
+    var handleMargin = parseInt(this.$handle.css('margin-left')),
+        handleLeft = this.$handle.offset().left - handleMargin,
+        progressLeft = this.$progress.offset().left,
+        progressWidth = this.$progress.width()
+    return Math.round(((handleLeft - progressLeft) / progressWidth) * 100)
+  }
+
+  Slider.prototype.original = function () {
+    if (!this.options.showChange) return this.value()
+    return this.originalLeft ? this.originalLeft : this.value()
+  }
+
   // SLIDER PLUGIN DEFINITION
   // ==========================
 
   var old = $.fn.slider
 
   $.fn.slider = function (option) {
+    if (option == 'value' || option == 'original') {
+      var data = $(this).first().data('bs.slider')
+      return data && data[option]()
+    }
+
     return this.each(function () {
       var $this = $(this)
       var data = $this.data('bs.slider')
