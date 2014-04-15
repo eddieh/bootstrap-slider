@@ -35,7 +35,7 @@
   }
 
   Slider.DEFAULTS = {
-  };
+  }
 
   Slider.prototype.mouseDown = function (e) {
     $(document)

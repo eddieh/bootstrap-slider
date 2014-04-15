@@ -183,15 +183,15 @@
      $sliderFive.on('change.bs.slider', function (e) {
        var original = $sliderFive.slider('original')
        var value  = $sliderFive.slider('value')
-       $('#extraInfoFive').text('Change value from ' + original + '% to ' + value + '%');
-     });
+       $('#extraInfoFive').text('Change value from ' + original + '% to ' + value + '%')
+     })
      $('#acceptChangeFive').on('click', function (e) {
        $sliderFive.slider('accept')
-       $('#extraInfoFive').text('Current value: ' + $sliderFive.slider('value') + '% (of 32)');
+       $('#extraInfoFive').text('Current value: ' + $sliderFive.slider('value') + '% (of 32)')
      })
      $('#rejectChangeFive').on('click', function (e) {
        $sliderFive.slider('reject')
-       $('#extraInfoFive').text('Current value: ' + $sliderFive.slider('value') + '% (of 32)');
+       $('#extraInfoFive').text('Current value: ' + $sliderFive.slider('value') + '% (of 32)')
      })
     </script>
     </script>
