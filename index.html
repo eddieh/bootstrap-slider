@@ -149,6 +149,33 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="col-xs-offset-4 col-xs-4">
+          <div id="sliderSix" class="slider">
+            <div class="progress-labels clearfix">
+              <div class="col-xs-3 tick text-left">0%</div>
+              <div class="col-xs-6 tick text-center">50%</div>
+              <div class="col-xs-3 tick text-right">100%</div>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+                <span class="sr-only">50% Complete</span>
+              </div>
+              <div class="progress-bar progress-bar-info progress-bar-change" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                <span class="sr-only">0% Complete</span>
+              </div>
+            </div>
+            <div class="slider-handle" style="left: 50%">
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          Accept or reject change:<br>
+          <button id="acceptChangeSix" type="button" class="btn btn-sm btn-default">Accept Change</button>
+          <button id="rejectChangeSix" type="button" class="btn btn-sm btn-default">Reject Change</button>
+        </div>
+      </div>
+
     </div>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -192,6 +219,20 @@
      $('#rejectChangeFive').on('click', function (e) {
        $sliderFive.slider('reject')
        $('#extraInfoFive').text('Current value: ' + $sliderFive.slider('value') + '% (of 32)')
+     })
+
+     var $sliderSix = $('#sliderSix').slider({
+       step: '25%',
+       valueTooltip:  function (val) {
+         return val + '% of 32 is ' + Math.round(32 * (val * .01))
+       },
+       showChange: true
+     })
+     $('#acceptChangeSix').on('click', function (e) {
+       $sliderSix.slider('accept')
+     })
+     $('#rejectChangeSix').on('click', function (e) {
+       $sliderSix.slider('reject')
      })
     </script>
     </script>

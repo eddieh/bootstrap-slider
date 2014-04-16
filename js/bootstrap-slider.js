@@ -66,13 +66,15 @@
     if (newLeft < 0) newLeft = 0
     if (newLeft > 100) newLeft = 100
 
-    if (this.options.valueTooltip) this.showTooltip(newLeft)
-
-    this.$handle.css('left', newLeft + '%')
-    this.$progressBar.css('width', newLeft + '%')
-
     if (this.options.showChange)
       this.showChange(progressLeft, progressWidth, newLeft)
+
+    this.$handle.css('left', newLeft + '%')
+
+    if (!this.options.showChange)
+      this.$progressBar.css('width', newLeft + '%')
+
+    if (this.options.valueTooltip) this.showTooltip(newLeft)
 
     this.$element.trigger('change.bs.slider')
   }
@@ -111,7 +113,7 @@
     var handleMargin = 0,
         handleLeft = 0
 
-    if (!this.originalLeft) {
+    if (this.originalLeft === undefined) {
       handleMargin = parseInt(this.$handle.css('margin-left'))
       handleLeft = this.$handle.offset().left - handleMargin
       this.originalLeft = Math.round(((handleLeft - progressLeft) / progressWidth) * 100)
