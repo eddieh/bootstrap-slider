@@ -166,7 +166,7 @@
 
   Slider.prototype.original = function () {
     if (!this.options.showChange) return this.value()
-    return this.originalLeft ? this.originalLeft : this.value()
+    return this.originalLeft !== undefined ? this.originalLeft : this.value()
   }
 
   // SLIDER PLUGIN DEFINITION
