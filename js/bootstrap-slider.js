@@ -88,12 +88,15 @@
         left = originalLeft - step,
         right = originalLeft + step
 
-    if (newLeft >= left - tolerance && newLeft <= left + tolerance)
-      newLeft = originalLeft - step
-    if (newLeft >= right - tolerance && newLeft <= right + tolerance)
-      newLeft = originalLeft + step
+    if (newLeft % step < step / 2) {
+      newLeft = Math.floor(newLeft / step) * step
+    }
 
-    if (Math.abs(originalLeft - newLeft) != step) return -1
+    if (newLeft % step > step / 2) {
+      newLeft = Math.floor(newLeft / step) * (step + 1)
+    }
+
+    if (newLeft % step != 0) return -1
 
     return newLeft
   }
